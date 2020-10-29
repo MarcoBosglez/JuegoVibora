@@ -1,21 +1,20 @@
 """Snake, classic arcade game.
-
 Exercises
-
 1. How do you make the snake faster or slower?
 2. How can you make the snake go around the edges?
 3. How would you move the food?
 4. Change the snake to respond to arrow keys.
-
 """
 
 from turtle import *
-from random import randrange
+from random import randint, randrange
 from freegames import square, vector
 
 food = vector(0, 0)
 snake = [vector(10, 0)]
 aim = vector(0, -10)
+colorsSnake = ['green', 'pink', 'blue', 'purple', 'cyan']
+colorsFood = ['black', 'yellow', 'orange', 'red']
 
 def change(x, y):
     "Change snake direction."
@@ -40,6 +39,7 @@ def move():
 
     if head == food:
         print('Snake:', len(snake))
+        
         food.x = randrange(-15, 15) * 10
         food.y = randrange(-15, 15) * 10
     else:
@@ -48,14 +48,21 @@ def move():
     clear()
 
     for body in snake:
-        square(body.x, body.y, 9, 'black')
-
-    square(food.x, food.y, 9, 'green')
+        square(body.x, body.y, 9, colorsSnake[randrange(len(colorsSnake))])
+    movements=[[10,0],[-10,0],[0,10],[0,-10],[0,0]]
+    index=randint(0,4)
+    temp_food=vector(food.x+movements[index][0],food.y+movements[index][1])
+    if (inside(temp_food)):
+        
+        food.x=food.x+movements[index][0]
+        food.y=food.y+movements[index][1]
+    square(food.x, food.y, 9, colorsFood[randrange(len(colorsFood))])
     update()
     ontimer(move, 100)
 
 setup(420, 420, 370, 0)
 hideturtle()
+
 tracer(False)
 listen()
 onkey(lambda: change(10, 0), 'Right')
